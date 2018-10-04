@@ -1,4 +1,3 @@
-
 #!/bin/bash -x
 ############################################
 #    Setup K8s cluster
@@ -68,17 +67,16 @@ apt update
 apt install -y kubelet kubeadm kubectl
 
 echo "install kubeket"
-
 # Pregunta= es master o nodo
-if [ $MTYPE = "master" ]
+if [ "$MTYPE" = "master" ]
  then
-        echo "install init"
+	echo "install init"
        kubeadm init --pod-network-cidr=10.244.0.0/16 > FIC.txt
         mkdir $HOME/.kube
         sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
         sudo chown $(id -u):$(id -g) $HOME/.kube/config
   ## Verification K8s
-echo "avant get pods"
+        echo "avant get pods"
         kubectl get pods --all-namespaces
         if [ $? -ne 0 ]
         then
@@ -88,6 +86,9 @@ echo "avant get pods"
             exit 1
 
         else
+            echo "================================="
+            echo "==  Master installation  OK  ===="
+            echo "================================="	
 	   kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
            if [ $? -ne 0 ]
            then
@@ -101,7 +102,7 @@ echo "avant get pods"
 	   rm FIC.txt
         fi
 #Objetivo leer ek fichero de FIC.txt y obtener linea del token para crear FIC_TOKEN
-elif [ $MTYPE = "node" ]
+elif [ "$MTYPE" = "node" ]
  then
      #Verification fichier vide
      Test_fichier_vide "${FIC_TOKEN}"
@@ -126,6 +127,9 @@ elif [ $MTYPE = "node" ]
             exit
 
         else
+            echo "==============================="
+            echo "==  Node installation  OK  ===="
+            echo "==============================="
        exit
       fi
 

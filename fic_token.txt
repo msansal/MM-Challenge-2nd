@@ -1,0 +1,1 @@
+  kubeadm join 172.31.110.121:6443 --token bankwq.5600ws7i8oy6lvkn --discovery-token-ca-cert-hash sha256:2f1f87f7744b22f810e741d2e8e81d364dc397fbf129c1fd300be15d7975a115
